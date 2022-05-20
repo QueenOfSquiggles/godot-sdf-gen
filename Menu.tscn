@@ -1,0 +1,284 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://main_theme.tres" type="Theme" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Menu.gd" type="Script" id=3]
+[ext_resource path="res://SmoothedPreview.gd" type="Script" id=4]
+[ext_resource path="res://ValueLabel.tscn" type="PackedScene" id=5]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float density_threshold = 0.5;
+uniform vec4 object_colour : hint_color = vec4(1.0);
+
+void fragment() {
+	float density = texture(TEXTURE, UV).r;
+	COLOR = vec4(0.0);
+	if (density > density_threshold) {
+		COLOR = object_colour
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/density_threshold = 0.505
+shader_param/object_colour = Color( 1, 1, 1, 1 )
+
+[node name="Menu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Content" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Content"]
+margin_right = 1004.0
+margin_bottom = 580.0
+
+[node name="Input" type="Panel" parent="Content/HBoxContainer"]
+margin_right = 289.0
+margin_bottom = 580.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="MarginContainer" type="MarginContainer" parent="Content/HBoxContainer/Input"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 32.0
+margin_top = 32.0
+margin_right = -32.0
+margin_bottom = -32.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/HBoxContainer/Input/MarginContainer"]
+margin_right = 225.0
+margin_bottom = 516.0
+
+[node name="BtnChooseFile" type="Button" parent="Content/HBoxContainer/Input/MarginContainer/VBoxContainer"]
+margin_right = 225.0
+margin_bottom = 20.0
+text = "Select Input"
+
+[node name="Control" type="Control" parent="Content/HBoxContainer/Input/MarginContainer/VBoxContainer"]
+margin_top = 24.0
+margin_right = 225.0
+margin_bottom = 56.0
+rect_min_size = Vector2( 0, 32 )
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Content/HBoxContainer/Input/MarginContainer/VBoxContainer"]
+margin_top = 60.0
+margin_right = 225.0
+margin_bottom = 516.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="InputPreview" type="TextureRect" parent="Content/HBoxContainer/Input/MarginContainer/VBoxContainer/AspectRatioContainer"]
+unique_name_in_owner = true
+margin_top = 115.5
+margin_right = 225.0
+margin_bottom = 340.5
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 2 )
+expand = true
+
+[node name="Display" type="Panel" parent="Content/HBoxContainer"]
+margin_left = 299.0
+margin_right = 878.0
+margin_bottom = 580.0
+size_flags_horizontal = 3
+
+[node name="TabContainer" type="TabContainer" parent="Content/HBoxContainer/Display"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Raw" type="Panel" parent="Content/HBoxContainer/Display/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Content/HBoxContainer/Display/TabContainer/Raw"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="OutputPreview" type="TextureRect" parent="Content/HBoxContainer/Display/TabContainer/Raw/AspectRatioContainer"]
+unique_name_in_owner = true
+margin_left = 13.5
+margin_right = 557.5
+margin_bottom = 544.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 2 )
+expand = true
+
+[node name="Smoothed" type="Panel" parent="Content/HBoxContainer/Display/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+script = ExtResource( 4 )
+
+[node name="MarginContainer" type="MarginContainer" parent="Content/HBoxContainer/Display/TabContainer/Smoothed"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/HBoxContainer/Display/TabContainer/Smoothed/MarginContainer"]
+margin_right = 551.0
+margin_bottom = 524.0
+
+[node name="Control" type="Control" parent="Content/HBoxContainer/Display/TabContainer/Smoothed/MarginContainer/VBoxContainer"]
+margin_right = 551.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/HBoxContainer/Display/TabContainer/Smoothed/MarginContainer/VBoxContainer"]
+margin_top = 4.0
+margin_right = 551.0
+margin_bottom = 20.0
+
+[node name="HSlider" type="HSlider" parent="Content/HBoxContainer/Display/TabContainer/Smoothed/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 450.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+step = 0.1
+value = 50.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="ValueLabel" parent="Content/HBoxContainer/Display/TabContainer/Smoothed/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 5 )]
+margin_left = 460.0
+margin_top = 1.0
+margin_right = 551.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+target_node = NodePath("../HSlider")
+
+[node name="PanelContainer" type="PanelContainer" parent="Content/HBoxContainer/Display/TabContainer/Smoothed/MarginContainer/VBoxContainer"]
+margin_top = 24.0
+margin_right = 551.0
+margin_bottom = 524.0
+size_flags_vertical = 3
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Content/HBoxContainer/Display/TabContainer/Smoothed/MarginContainer/VBoxContainer/PanelContainer"]
+margin_right = 551.0
+margin_bottom = 500.0
+
+[node name="OutputSmoothed" type="TextureRect" parent="Content/HBoxContainer/Display/TabContainer/Smoothed/MarginContainer/VBoxContainer/PanelContainer/AspectRatioContainer"]
+unique_name_in_owner = true
+material = SubResource( 2 )
+margin_left = 25.5
+margin_right = 525.5
+margin_bottom = 500.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 2 )
+expand = true
+
+[node name="Tools" type="Panel" parent="Content/HBoxContainer"]
+margin_left = 888.0
+margin_right = 1004.0
+margin_bottom = 580.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+
+[node name="ColorPicker" type="ColorPicker" parent="Content/HBoxContainer/Tools"]
+unique_name_in_owner = true
+visible = false
+margin_left = 4.0
+margin_top = 56.0
+margin_right = 330.0
+margin_bottom = 468.0
+color = Color( 0, 0, 0, 1 )
+edit_alpha = false
+presets_enabled = false
+presets_visible = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/HBoxContainer/Tools"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Control" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+margin_right = 116.0
+margin_bottom = 10.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="Label" type="Label" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+margin_top = 14.0
+margin_right = 116.0
+margin_bottom = 28.0
+text = "Tools"
+align = 1
+
+[node name="AllowanceSlider" type="HSlider" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 32.0
+margin_right = 116.0
+margin_bottom = 48.0
+max_value = 0.5
+step = 0.01
+value = 0.01
+tick_count = 5
+ticks_on_borders = true
+
+[node name="ValueLabel" parent="Content/HBoxContainer/Tools/VBoxContainer" instance=ExtResource( 5 )]
+target_node = NodePath("../AllowanceSlider")
+
+[node name="Control2" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+margin_top = 70.0
+margin_right = 116.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="OptionButton" type="OptionButton" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+margin_top = 84.0
+margin_right = 116.0
+margin_bottom = 104.0
+
+[node name="Control3" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+margin_top = 108.0
+margin_right = 116.0
+margin_bottom = 518.0
+rect_min_size = Vector2( 0, 10 )
+size_flags_vertical = 3
+
+[node name="BtnGenerate" type="Button" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+margin_top = 522.0
+margin_right = 116.0
+margin_bottom = 542.0
+text = "Generate"
+
+[node name="BtnSave" type="Button" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+margin_top = 546.0
+margin_right = 116.0
+margin_bottom = 566.0
+text = "Save To File"
+
+[node name="Control4" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+margin_top = 570.0
+margin_right = 116.0
+margin_bottom = 580.0
+rect_min_size = Vector2( 0, 10 )
+
+[connection signal="pressed" from="Content/HBoxContainer/Input/MarginContainer/VBoxContainer/BtnChooseFile" to="." method="_open_file"]
+[connection signal="pressed" from="Content/HBoxContainer/Tools/VBoxContainer/BtnGenerate" to="." method="_generate"]
