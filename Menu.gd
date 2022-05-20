@@ -1,6 +1,6 @@
 extends Control
 
-export (int) var kernel_size := 2
+export (int) var kernel_size := 4
 export (Color) var target_colour := Color.black
 export (float) var colour_range := 0.01
 
@@ -9,7 +9,9 @@ onready var output_preview := $"%OutputPreview"
 onready var output_smoothed := $"%OutputSmoothed"
 onready var colour_pick :ColorPicker= $"%ColorPicker"
 onready var allowance_slider : HSlider = $"%AllowanceSlider"
+onready var check_use_complete_sound : CheckBox = $"%CheckUseCompleteSound"
 onready var margins := $Content
+onready var audio_player := $AudioStreamPlayer
 
 func _ready():
 	var _clr := colour_pick.connect("color_changed", self, "_on_colour_picked")
@@ -84,7 +86,9 @@ func _generate() -> void:
 	output_preview.texture = texture
 	texture.flags = Texture.FLAG_FILTER
 	output_smoothed.texture = texture
-	
+	if check_use_complete_sound.pressed:
+		audio_player.call_deferred("play")
+
 
 func _colour_distance(a : Color, b : Color) -> float:
 	# approximate distance in terms of colour
@@ -93,3 +97,28 @@ func _colour_distance(a : Color, b : Color) -> float:
 	var bd := abs(a.b - b.b)
 	var ad := abs(a.a - b.a)
 	return (rd + gd + bd + ad) / 4.0
+
+
+func _on_KernelSize_value_changed(value):
+	kernel_size = value
+
+
+func _on_BtnSave_pressed():
+	var file_dialog := FileDialog.new()
+	file_dialog.access = FileDialog.ACCESS_FILESYSTEM
+	file_dialog.mode = FileDialog.MODE_SAVE_FILE
+	file_dialog.size_flags_horizontal = SIZE_EXPAND_FILL
+	file_dialog.add_filter("*.png ; PNG file")
+	file_dialog.size_flags_vertical = SIZE_EXPAND_FILL
+	margins.add_child(file_dialog)
+	var _clr = file_dialog.connect("confirmed", self, "_on_save_image", [file_dialog])
+	file_dialog.popup_centered(Vector2(720, 480))
+
+func _on_save_image(file_dialog : FileDialog) -> void:
+	var path := file_dialog.current_path
+	var img : Image = output_preview.texture.get_data()
+	if not path.ends_with(".png"):
+		path = path + ".png"
+	var err := img.save_png(path)
+	if err != OK:
+		push_warning("failed to save file")

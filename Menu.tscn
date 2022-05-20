@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://main_theme.tres" type="Theme" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://Menu.gd" type="Script" id=3]
 [ext_resource path="res://SmoothedPreview.gd" type="Script" id=4]
 [ext_resource path="res://ValueLabel.tscn" type="PackedScene" id=5]
+[ext_resource path="res://kenney_interfacesounds/confirmation_001.ogg" type="AudioStream" id=6]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -160,6 +161,8 @@ margin_bottom = 20.0
 margin_right = 450.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
+min_value = 1.0
+max_value = 99.0
 step = 0.1
 value = 50.0
 tick_count = 5
@@ -230,33 +233,86 @@ margin_bottom = 28.0
 text = "Tools"
 align = 1
 
-[node name="AllowanceSlider" type="HSlider" parent="Content/HBoxContainer/Tools/VBoxContainer"]
-unique_name_in_owner = true
+[node name="Control5" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
 margin_top = 32.0
 margin_right = 116.0
-margin_bottom = 48.0
+margin_bottom = 42.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="Label2" type="Label" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+margin_top = 46.0
+margin_right = 116.0
+margin_bottom = 60.0
+text = "Colour Threshold"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+margin_top = 64.0
+margin_right = 116.0
+margin_bottom = 80.0
+
+[node name="AllowanceSlider" type="HSlider" parent="Content/HBoxContainer/Tools/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+margin_right = 86.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
 max_value = 0.5
 step = 0.01
 value = 0.01
 tick_count = 5
 ticks_on_borders = true
 
-[node name="ValueLabel" parent="Content/HBoxContainer/Tools/VBoxContainer" instance=ExtResource( 5 )]
+[node name="ValueLabel" parent="Content/HBoxContainer/Tools/VBoxContainer/HBoxContainer" instance=ExtResource( 5 )]
+margin_left = 96.0
+margin_top = 1.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 20, 0 )
 target_node = NodePath("../AllowanceSlider")
 
-[node name="Control2" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
-margin_top = 70.0
-margin_right = 116.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 0, 10 )
-
-[node name="OptionButton" type="OptionButton" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+[node name="Label3" type="Label" parent="Content/HBoxContainer/Tools/VBoxContainer"]
 margin_top = 84.0
 margin_right = 116.0
-margin_bottom = 104.0
+margin_bottom = 115.0
+text = "Kernel Size
+Big=Slow"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+margin_top = 119.0
+margin_right = 116.0
+margin_bottom = 135.0
+
+[node name="KernelSize" type="HSlider" parent="Content/HBoxContainer/Tools/VBoxContainer/HBoxContainer2"]
+margin_right = 86.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+max_value = 128.0
+value = 4.0
+rounded = true
+tick_count = 5
+ticks_on_borders = true
+
+[node name="ValueLabel" parent="Content/HBoxContainer/Tools/VBoxContainer/HBoxContainer2" instance=ExtResource( 5 )]
+margin_left = 96.0
+margin_top = 1.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 20, 0 )
+size_flags_stretch_ratio = 0.2
+target_node = NodePath("../KernelSize")
+
+[node name="Control2" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+margin_top = 139.0
+margin_right = 116.0
+margin_bottom = 149.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="CheckUseCompleteSound" type="CheckBox" parent="Content/HBoxContainer/Tools/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 153.0
+margin_right = 116.0
+margin_bottom = 177.0
+text = "Done sound"
 
 [node name="Control3" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
-margin_top = 108.0
+margin_top = 181.0
 margin_right = 116.0
 margin_bottom = 518.0
 rect_min_size = Vector2( 0, 10 )
@@ -280,5 +336,10 @@ margin_right = 116.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 0, 10 )
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
 [connection signal="pressed" from="Content/HBoxContainer/Input/MarginContainer/VBoxContainer/BtnChooseFile" to="." method="_open_file"]
+[connection signal="value_changed" from="Content/HBoxContainer/Tools/VBoxContainer/HBoxContainer2/KernelSize" to="." method="_on_KernelSize_value_changed"]
 [connection signal="pressed" from="Content/HBoxContainer/Tools/VBoxContainer/BtnGenerate" to="." method="_generate"]
+[connection signal="pressed" from="Content/HBoxContainer/Tools/VBoxContainer/BtnSave" to="." method="_on_BtnSave_pressed"]
