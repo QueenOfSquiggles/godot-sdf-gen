@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://ValueLabel.gd" type="Script" id=1]
+[ext_resource path="res://scenes/ValueLabel.gd" type="Script" id=1]
 
 [node name="ValueLabel" type="Label"]
 margin_top = 52.0
