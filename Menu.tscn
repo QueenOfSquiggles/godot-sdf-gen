@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://main_theme.tres" type="Theme" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://SmoothedPreview.gd" type="Script" id=4]
 [ext_resource path="res://ValueLabel.tscn" type="PackedScene" id=5]
 [ext_resource path="res://kenney_interfacesounds/confirmation_001.ogg" type="AudioStream" id=6]
+[ext_resource path="res://scenes/RenderingEngine.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -14,7 +15,7 @@ uniform float density_threshold = 0.5;
 uniform vec4 object_colour : hint_color = vec4(1.0);
 
 void fragment() {
-	float density = texture(TEXTURE, UV).r;
+	float density = texture(TEXTURE, UV, 2.0).r;
 	COLOR = vec4(0.0);
 	if (density > density_threshold) {
 		COLOR = object_colour
@@ -31,6 +32,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 1 )
 script = ExtResource( 3 )
+
+[node name="RenderingEngine" parent="." instance=ExtResource( 7 )]
+unique_name_in_owner = true
+visible = false
+margin_left = 293.0
+margin_top = 10.0
+margin_right = 293.0
+margin_bottom = 10.0
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -50,7 +59,7 @@ margin_right = 1004.0
 margin_bottom = 580.0
 
 [node name="Input" type="Panel" parent="Content/HBoxContainer"]
-margin_right = 289.0
+margin_right = 273.0
 margin_bottom = 580.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
@@ -64,40 +73,41 @@ margin_right = -32.0
 margin_bottom = -32.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Content/HBoxContainer/Input/MarginContainer"]
-margin_right = 225.0
+margin_right = 209.0
 margin_bottom = 516.0
 
 [node name="BtnChooseFile" type="Button" parent="Content/HBoxContainer/Input/MarginContainer/VBoxContainer"]
-margin_right = 225.0
-margin_bottom = 20.0
+margin_right = 209.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 0, 32 )
 text = "Select Input"
 
 [node name="Control" type="Control" parent="Content/HBoxContainer/Input/MarginContainer/VBoxContainer"]
-margin_top = 24.0
-margin_right = 225.0
-margin_bottom = 56.0
+margin_top = 36.0
+margin_right = 209.0
+margin_bottom = 68.0
 rect_min_size = Vector2( 0, 32 )
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="Content/HBoxContainer/Input/MarginContainer/VBoxContainer"]
-margin_top = 60.0
-margin_right = 225.0
+margin_top = 72.0
+margin_right = 209.0
 margin_bottom = 516.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="InputPreview" type="TextureRect" parent="Content/HBoxContainer/Input/MarginContainer/VBoxContainer/AspectRatioContainer"]
 unique_name_in_owner = true
-margin_top = 115.5
-margin_right = 225.0
-margin_bottom = 340.5
+margin_top = 117.5
+margin_right = 209.0
+margin_bottom = 326.5
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 2 )
 expand = true
 
 [node name="Display" type="Panel" parent="Content/HBoxContainer"]
-margin_left = 299.0
-margin_right = 878.0
+margin_left = 283.0
+margin_right = 830.0
 margin_bottom = 580.0
 size_flags_horizontal = 3
 
@@ -106,13 +116,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Raw" type="Panel" parent="Content/HBoxContainer/Display/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+margin_top = 24.0
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="Content/HBoxContainer/Display/TabContainer/Raw"]
 anchor_right = 1.0
@@ -120,15 +126,16 @@ anchor_bottom = 1.0
 
 [node name="OutputPreview" type="TextureRect" parent="Content/HBoxContainer/Display/TabContainer/Raw/AspectRatioContainer"]
 unique_name_in_owner = true
-margin_left = 13.5
-margin_right = 557.5
-margin_bottom = 544.0
+margin_top = 4.5
+margin_right = 547.0
+margin_bottom = 551.5
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 2 )
 expand = true
 
 [node name="Smoothed" type="Panel" parent="Content/HBoxContainer/Display/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -146,7 +153,7 @@ margin_right = -10.0
 margin_bottom = -10.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Content/HBoxContainer/Display/TabContainer/Smoothed/MarginContainer"]
-margin_right = 551.0
+margin_right = 519.0
 margin_bottom = 524.0
 
 [node name="Control" type="Control" parent="Content/HBoxContainer/Display/TabContainer/Smoothed/MarginContainer/VBoxContainer"]
@@ -199,19 +206,19 @@ texture = ExtResource( 2 )
 expand = true
 
 [node name="Tools" type="Panel" parent="Content/HBoxContainer"]
-margin_left = 888.0
+margin_left = 840.0
 margin_right = 1004.0
 margin_bottom = 580.0
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.2
+size_flags_stretch_ratio = 0.3
 
 [node name="ColorPicker" type="ColorPicker" parent="Content/HBoxContainer/Tools"]
 unique_name_in_owner = true
 visible = false
-margin_left = 4.0
-margin_top = 56.0
-margin_right = 330.0
-margin_bottom = 468.0
+margin_left = 52.0
+margin_top = 104.0
+margin_right = 378.0
+margin_bottom = 516.0
 color = Color( 0, 0, 0, 1 )
 edit_alpha = false
 presets_enabled = false
@@ -222,123 +229,110 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Control" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
-margin_right = 116.0
+margin_right = 164.0
 margin_bottom = 10.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="Label" type="Label" parent="Content/HBoxContainer/Tools/VBoxContainer"]
 margin_top = 14.0
-margin_right = 116.0
+margin_right = 164.0
 margin_bottom = 28.0
 text = "Tools"
 align = 1
 
 [node name="Control5" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
 margin_top = 32.0
-margin_right = 116.0
+margin_right = 164.0
 margin_bottom = 42.0
 rect_min_size = Vector2( 0, 10 )
 
-[node name="Label2" type="Label" parent="Content/HBoxContainer/Tools/VBoxContainer"]
-margin_top = 46.0
-margin_right = 116.0
-margin_bottom = 60.0
-text = "Colour Threshold"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Content/HBoxContainer/Tools/VBoxContainer"]
-margin_top = 64.0
-margin_right = 116.0
-margin_bottom = 80.0
-
-[node name="AllowanceSlider" type="HSlider" parent="Content/HBoxContainer/Tools/VBoxContainer/HBoxContainer"]
+[node name="CheckSafety" type="CheckButton" parent="Content/HBoxContainer/Tools/VBoxContainer"]
 unique_name_in_owner = true
-margin_right = 86.0
-margin_bottom = 16.0
-size_flags_horizontal = 3
-max_value = 0.5
-step = 0.01
-value = 0.01
-tick_count = 5
-ticks_on_borders = true
-
-[node name="ValueLabel" parent="Content/HBoxContainer/Tools/VBoxContainer/HBoxContainer" instance=ExtResource( 5 )]
-margin_left = 96.0
-margin_top = 1.0
-margin_bottom = 15.0
-rect_min_size = Vector2( 20, 0 )
-target_node = NodePath("../AllowanceSlider")
+margin_top = 46.0
+margin_right = 164.0
+margin_bottom = 78.0
+pressed = true
+text = "Safety"
+align = 1
 
 [node name="Label3" type="Label" parent="Content/HBoxContainer/Tools/VBoxContainer"]
-margin_top = 84.0
-margin_right = 116.0
-margin_bottom = 115.0
+margin_top = 82.0
+margin_right = 164.0
+margin_bottom = 113.0
 text = "Kernel Size
 Big=Slow"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Content/HBoxContainer/Tools/VBoxContainer"]
-margin_top = 119.0
-margin_right = 116.0
-margin_bottom = 135.0
+margin_top = 117.0
+margin_right = 164.0
+margin_bottom = 133.0
 
 [node name="KernelSize" type="HSlider" parent="Content/HBoxContainer/Tools/VBoxContainer/HBoxContainer2"]
-margin_right = 86.0
+unique_name_in_owner = true
+margin_right = 130.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
-max_value = 128.0
+min_value = 1.0
+max_value = 256.0
 value = 4.0
 rounded = true
 tick_count = 5
 ticks_on_borders = true
 
 [node name="ValueLabel" parent="Content/HBoxContainer/Tools/VBoxContainer/HBoxContainer2" instance=ExtResource( 5 )]
-margin_left = 96.0
+margin_left = 140.0
 margin_top = 1.0
+margin_right = 164.0
 margin_bottom = 15.0
 rect_min_size = Vector2( 20, 0 )
 size_flags_stretch_ratio = 0.2
 target_node = NodePath("../KernelSize")
 
 [node name="Control2" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
-margin_top = 139.0
-margin_right = 116.0
-margin_bottom = 149.0
+margin_top = 137.0
+margin_right = 164.0
+margin_bottom = 147.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="CheckUseCompleteSound" type="CheckBox" parent="Content/HBoxContainer/Tools/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 153.0
-margin_right = 116.0
-margin_bottom = 177.0
+margin_top = 151.0
+margin_right = 164.0
+margin_bottom = 183.0
+rect_min_size = Vector2( 0, 32 )
 text = "Done sound"
 
 [node name="Control3" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
-margin_top = 181.0
-margin_right = 116.0
-margin_bottom = 518.0
+margin_top = 187.0
+margin_right = 164.0
+margin_bottom = 494.0
 rect_min_size = Vector2( 0, 10 )
 size_flags_vertical = 3
 
 [node name="BtnGenerate" type="Button" parent="Content/HBoxContainer/Tools/VBoxContainer"]
-margin_top = 522.0
-margin_right = 116.0
-margin_bottom = 542.0
+margin_top = 498.0
+margin_right = 164.0
+margin_bottom = 530.0
+rect_min_size = Vector2( 0, 32 )
 text = "Generate"
 
 [node name="BtnSave" type="Button" parent="Content/HBoxContainer/Tools/VBoxContainer"]
-margin_top = 546.0
-margin_right = 116.0
+margin_top = 534.0
+margin_right = 164.0
 margin_bottom = 566.0
+rect_min_size = Vector2( 0, 32 )
 text = "Save To File"
 
 [node name="Control4" type="Control" parent="Content/HBoxContainer/Tools/VBoxContainer"]
 margin_top = 570.0
-margin_right = 116.0
+margin_right = 164.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 
+[connection signal="on_completed" from="RenderingEngine" to="." method="_on_RenderingEngine_completed"]
 [connection signal="pressed" from="Content/HBoxContainer/Input/MarginContainer/VBoxContainer/BtnChooseFile" to="." method="_open_file"]
 [connection signal="value_changed" from="Content/HBoxContainer/Tools/VBoxContainer/HBoxContainer2/KernelSize" to="." method="_on_KernelSize_value_changed"]
 [connection signal="pressed" from="Content/HBoxContainer/Tools/VBoxContainer/BtnGenerate" to="." method="_generate"]

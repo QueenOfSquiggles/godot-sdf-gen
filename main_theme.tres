@@ -1,4 +1,45 @@
-[gd_resource type="Theme" load_steps=3 format=2]
+[gd_resource type="Theme" load_steps=11 format=2]
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.235294, 0.168627, 0.254902, 1 )
+border_width_left = 4
+border_width_right = 4
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color( 0, 0, 0, 0.878431 )
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.235294, 0.168627, 0.254902, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.729412, 0.482353, 0.8, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.235294, 0.168627, 0.254902, 1 )
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.729412, 0.482353, 0.8, 1 )
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
@@ -10,7 +51,35 @@ corner_radius_bottom_left = 8
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0, 0, 0, 1 )
 
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.35, 0.35, 0.35, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0, 0, 0, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 2
+border_width_right = 2
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
 [resource]
+Button/styles/hover = SubResource( 6 )
+Button/styles/normal = SubResource( 7 )
+Button/styles/pressed = SubResource( 8 )
 HBoxContainer/constants/separation = 10
+HSlider/styles/grabber_area = SubResource( 9 )
+HSlider/styles/grabber_area_highlight = SubResource( 10 )
 Panel/styles/panel = SubResource( 1 )
 PanelContainer/styles/panel = SubResource( 2 )
+TabContainer/styles/panel = SubResource( 3 )
+TabContainer/styles/tab_bg = SubResource( 4 )
+TabContainer/styles/tab_fg = SubResource( 5 )

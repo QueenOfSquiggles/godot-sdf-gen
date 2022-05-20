@@ -6,4 +6,5 @@
 margin_top = 52.0
 margin_right = 116.0
 margin_bottom = 66.0
+text = "%%"
 script = ExtResource( 1 )
